@@ -1,7 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+//const firebaseConfig = {
+//apiKey: "env",
+//authDomain: "env",
+//projectId: "env",
+//storageBucket: "env",
+//messagingSenderId: "env",
+//appId: "env",
+//measurementId: "env"
+//};
+
+const App = () => {
     return (
         <div className="App">
             <header className="App-header">
@@ -20,6 +30,6 @@ function App() {
             </header>
         </div>
     );
-}
+};
 
 export default App;
