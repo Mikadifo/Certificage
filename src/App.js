@@ -1,6 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
 
+//const firebaseConfig = {
+//apiKey: "dev",
+//authDomain: "dev",
+//projectId: "dev",
+//storageBucket: "dev",
+//messagingSenderId: "dev",
+//appId: "dev",
+//measurementId: "dev"
+//};
+
 const App = () => {
     return (
         <div className="App">
