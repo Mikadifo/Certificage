@@ -17,7 +17,10 @@ const Register = () => {
     const navigate = useNavigate();
 
     const register = () => {
-        if (!name) alert('Please enter name'); //TODO: Change this
+        if (!name || !email || !password) {
+            alert('Please enter all the fields'); //TODO: Change this
+            return;
+        }
         registerWithEmailAndPassword(name, email, password);
     };
 
@@ -42,6 +45,7 @@ const Register = () => {
                     onChange={(e) => setName(e.target.value)}
                     className="form-control"
                     placeholder="Name"
+                    required
                 />
             </div>
             <div className="mb-3">
@@ -55,6 +59,7 @@ const Register = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="form-control"
                     placeholder="Email"
+                    required
                 />
             </div>
             <div className="mb-4">
@@ -68,6 +73,7 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className="form-control"
                     placeholder="Password"
+                    required
                 />
             </div>
             <div className="d-grid gap-2">
