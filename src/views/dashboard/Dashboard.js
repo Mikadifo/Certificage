@@ -39,7 +39,13 @@ const Dashboard = () => {
             U are logged in as
             <p>{name}</p>
             <p>{user?.email}</p>
-            <button className="btn btn-danger" onClick={logout}>
+            <button
+                className="btn btn-danger"
+                onClick={() => {
+                    logout();
+                    navigate('/');
+                }}
+            >
                 Logout
             </button>
         </>

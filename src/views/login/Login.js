@@ -38,6 +38,7 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="form-control"
                     placeholder="Email"
+                    required
                 />
             </div>
             <div className="mb-4">
@@ -51,6 +52,7 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className="form-control"
                     placeholder="Password"
+                    required
                 />
                 <p className="text-end mt-1">
                     <Link to="/reset-pass" className="text-decoration-none">
