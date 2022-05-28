@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { auth } from './../../firebase/config';
+import { Link } from 'react-router-dom';
 import {
     signInWithGoogle,
     logInWithEmailAndPassword,
@@ -7,6 +8,8 @@ import {
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -31,21 +34,47 @@ const Login = () => {
                 <input
                     id="email-input-login"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="form-control"
                     placeholder="Email"
                 />
             </div>
-            <div className="mb-3">
+            <div className="mb-4">
                 <label htmlFor="pass-input-login" className="form-label">
                     Password
                 </label>
                 <input
                     id="pass-input-login"
                     type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="form-control"
                     placeholder="Password"
                 />
+                <p className="text-end mt-1">
+                    <Link to="/reset-pass" className="text-decoration-none">
+                        Forgot Password
+                    </Link>
+                </p>
             </div>
+            <div className="d-grid gap-2">
+                <button type="button" className="btn btn-outline-primary">
+                    Login
+                </button>
+                <p className="or-separator text-center">- or -</p>
+                <button type="button" className="btn btn-outline-secondary">
+                    <i className="fa-brands fa-google"></i>
+                    <FontAwesomeIcon icon={faGoogle} /> Login with Google
+                </button>
+            </div>
+            <hr />
+            <p className="text-center">
+                Not registered?{' '}
+                <Link to="/register" className="text-decoration-none">
+                    Create an account
+                </Link>
+            </p>
         </div>
     );
 };
