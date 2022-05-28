@@ -2,6 +2,7 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     sendPasswordResetEmail,
+    signInWithPopup,
     signInWithEmailAndPassword,
     signOut,
 } from 'firebase/auth';
@@ -13,7 +14,7 @@ const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
     try {
-        const res = await signInWithGoogle(auth, googleProvider);
+        const res = await signInWithPopup(auth, googleProvider);
         const user = res.user;
         const uidQuery = query(
             collection(db, 'users'),
