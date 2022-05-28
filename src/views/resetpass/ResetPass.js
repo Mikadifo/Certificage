@@ -1,5 +1,5 @@
 const ResetPass = () => {
-    return <>rest</>;
+    return <div className="">rest</div>;
 };
 
 export default ResetPass;

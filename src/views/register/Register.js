@@ -1,32 +1,49 @@
 import { useEffect, useState } from 'react';
-import { auth } from './../../firebase/config';
-import { Link } from 'react-router-dom';
-import {
-    signInWithGoogle,
-    logInWithEmailAndPassword,
-} from './../../firebase/loginController';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import { auth } from '../../firebase/config';
+import { useNavigate, Link } from 'react-router-dom';
+import {
+    registerWithEmailAndPassword,
+    signInWithGoogle,
+} from '../../firebase/loginController';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const [user, loading, error] = useAuthState(auth);
     const navigate = useNavigate();
 
+    const register = () => {
+        if (!name) alert('Please enter name'); //TODO: Change this
+        registerWithEmailAndPassword(name, email, password);
+    };
+
     useEffect(() => {
         if (loading) {
-            //TODO: Loading screen
+            //TODO: Implement loading...
             return;
         }
-        if (user) navigate('/dashboard');
+        if (user) navigate('/dashboard', { replace: true });
     }, [user, loading]);
 
     return (
         <div className="container mt-5 p-5 border">
+            <div className="mb-3">
+                <label htmlFor="name-input-login" className="form-label">
+                    Name
+                </label>
+                <input
+                    id="name-input-login"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-control"
+                    placeholder="Name"
+                />
+            </div>
             <div className="mb-3">
                 <label htmlFor="email-input-login" className="form-label">
                     Email address
@@ -52,19 +69,14 @@ const Login = () => {
                     className="form-control"
                     placeholder="Password"
                 />
-                <p className="text-end mt-1">
-                    <Link to="/reset-pass" className="text-decoration-none">
-                        Forgot Password
-                    </Link>
-                </p>
             </div>
             <div className="d-grid gap-2">
                 <button
                     type="button"
                     className="btn btn-outline-primary"
-                    onClick={() => logInWithEmailAndPassword(email, password)}
+                    onClick={register}
                 >
-                    Login
+                    Register
                 </button>
                 <p className="or-separator text-center">- or -</p>
                 <button
@@ -73,18 +85,18 @@ const Login = () => {
                     onClick={signInWithGoogle}
                 >
                     <i className="fa-brands fa-google"></i>
-                    <FontAwesomeIcon icon={faGoogle} /> Login with Google
+                    <FontAwesomeIcon icon={faGoogle} /> Register with Google
                 </button>
             </div>
             <hr />
             <p className="text-center">
-                Not registered?{' '}
-                <Link to="/register" className="text-decoration-none">
-                    Create an account
+                Already have an account?{' '}
+                <Link to="/login" className="text-decoration-none">
+                    Login
                 </Link>
             </p>
         </div>
     );
 };
 
-export default Login;
+export default Register;
