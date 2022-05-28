@@ -29,9 +29,10 @@ const Dashboard = () => {
     useEffect(() => {
         if (loading) {
             //TODO: implement loading screen
-            if (!user) return navigate('/');
-            fetchUserName();
+            return;
         }
+        if (!user) return navigate('/');
+        fetchUserName();
     }, [user, loading]);
 
     return (
