@@ -8,29 +8,56 @@ import {
 } from '../../firebase/loginController';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import {
+    emailRegex,
+    nameRegex,
+    passwordRegex,
+} from '../../validations/FormValidations';
 
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [user, loading, error] = useAuthState(auth);
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [user] = useAuthState(auth);
     const navigate = useNavigate();
 
     const register = () => {
-        if (!name || !email || !password) {
-            alert('Please enter all the fields'); //TODO: Change this
-            return;
-        }
         registerWithEmailAndPassword(name, email, password);
     };
 
+    const emailChanged = ({ target }) => {
+        setEmail(target.value);
+        setEmailError(
+            !emailRegex.test(target.value)
+                ? 'Invalid email (Ex: name@example.com)'
+                : '',
+        );
+    };
+
+    const passwordChanged = ({ target }) => {
+        setPassword(target.value);
+        setPasswordError(
+            !passwordRegex.test(target.value)
+                ? 'Password must be 8 characters at least'
+                : '',
+        );
+    };
+
+    const nameChanged = ({ target }) => {
+        setName(target.value);
+        setNameError(
+            !nameRegex.test(target.value)
+                ? 'Name can only contain alphanumerics (a-z, 0-9, _) and be 4 characters at least'
+                : '',
+        );
+    };
+
     useEffect(() => {
-        if (loading) {
-            //TODO: Implement loading...
-            return;
-        }
         if (user) navigate('/dashboard', { replace: true });
-    }, [user, loading]);
+    }, [user]);
 
     return (
         <div className="container mt-5 p-5 border">
@@ -42,11 +69,14 @@ const Register = () => {
                     id="name-input-login"
                     type="text"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={nameChanged}
                     className="form-control"
                     placeholder="Name"
                     required
                 />
+                {nameError && (
+                    <p className="text-start text-danger mt-1">{nameError}</p>
+                )}
             </div>
             <div className="mb-3">
                 <label htmlFor="email-input-login" className="form-label">
@@ -56,11 +86,14 @@ const Register = () => {
                     id="email-input-login"
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={emailChanged}
                     className="form-control"
                     placeholder="Email"
                     required
                 />
+                {emailError && (
+                    <p className="text-start text-danger mt-1">{emailError}</p>
+                )}
             </div>
             <div className="mb-4">
                 <label htmlFor="pass-input-login" className="form-label">
@@ -70,17 +103,30 @@ const Register = () => {
                     id="pass-input-login"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={passwordChanged}
                     className="form-control"
                     placeholder="Password"
                     required
                 />
+                {passwordError && (
+                    <p className="text-start text-danger mt-1">
+                        {passwordError}
+                    </p>
+                )}
             </div>
             <div className="d-grid gap-2">
                 <button
                     type="button"
                     className="btn btn-outline-primary"
                     onClick={register}
+                    disabled={
+                        !name ||
+                        !email ||
+                        !password ||
+                        emailError ||
+                        passwordError ||
+                        nameError
+                    }
                 >
                     Register
                 </button>

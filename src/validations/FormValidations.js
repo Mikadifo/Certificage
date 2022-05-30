@@ -4,3 +4,6 @@ export const emailRegex =
 
 //Password must be 8 characters min
 export const passwordRegex = /.{8,}/;
+
+//Name must contain only alphanumerics
+export const nameRegex = /\w{4,}/;

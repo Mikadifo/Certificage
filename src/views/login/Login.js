@@ -21,21 +21,21 @@ const Login = () => {
     const navigate = useNavigate();
 
     const emailChanged = ({ target }) => {
+        setEmail(target.value);
         setEmailError(
-            !emailRegex.test(email)
+            !emailRegex.test(target.value)
                 ? 'Invalid email (Ex: name@example.com)'
                 : '',
         );
-        setEmail(target.value);
     };
 
     const passwordChanged = ({ target }) => {
+        setPassword(target.value);
         setPasswordError(
-            !passwordRegex.test(password)
+            !passwordRegex.test(target.value)
                 ? 'Password must be 8 characters at least'
                 : '',
         );
-        setPassword(target.value);
     };
 
     useEffect(() => {
