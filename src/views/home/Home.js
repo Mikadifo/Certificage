@@ -6,15 +6,15 @@ import { auth } from '../../firebase/config';
 const Home = () => {
     const [user, loading] = useAuthState(auth);
     const [buttonConfig, setButtonConfig] = useState({
-        text: 'Login',
-        url: '/login',
+        text: '',
+        url: '',
     });
 
     useEffect(() => {
         if (!loading && user) {
-            console.log(user);
-            setButtonConfig({ text: 'Dashboard', url: '/dashboard' });
+            return setButtonConfig({ text: 'Dashboard', url: '/dashboard' });
         }
+        setButtonConfig({ text: 'Login', url: '/login' });
     }, [user, loading]);
 
     return (
