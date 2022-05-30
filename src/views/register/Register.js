@@ -21,7 +21,7 @@ const Register = () => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [nameError, setNameError] = useState('');
-    const [user] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
 
     const register = () => {
@@ -56,7 +56,9 @@ const Register = () => {
     };
 
     useEffect(() => {
-        if (user) navigate('/dashboard', { replace: true });
+        if (!loading) {
+            if (user) navigate('/dashboard');
+        }
     }, [user]);
 
     return (

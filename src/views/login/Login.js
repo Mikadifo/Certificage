@@ -17,7 +17,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const [user] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
 
     const emailChanged = ({ target }) => {
@@ -39,7 +39,9 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if (user) navigate('/dashboard');
+        if (!loading) {
+            if (user) navigate('/dashboard');
+        }
     }, [user]);
 
     return (

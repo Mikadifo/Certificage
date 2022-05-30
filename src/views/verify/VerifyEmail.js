@@ -6,7 +6,7 @@ import { auth } from '../../firebase/config';
 import './VerifyEmail.css';
 
 const VerifyEmail = () => {
-    const [user] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
     const [emailSent, setEmailSent] = useState(true);
     const [timer, setTimer] = useState(10);
@@ -18,8 +18,10 @@ const VerifyEmail = () => {
     };
 
     useEffect(() => {
-        if (!user) return;
-        if (user.emailVerified) return navigate('/dashboard');
+        if (!loading) {
+            if (!user) return navigate('/');
+            if (user.emailVerified) return navigate('/dashboard');
+        }
     }, [user]);
 
     useEffect(() => {
