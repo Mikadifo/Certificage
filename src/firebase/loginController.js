@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { query } from 'firebase/database';
 import { addDoc, collection, getDocs, where } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 import { auth, db } from './config';
 
 const googleProvider = new GoogleAuthProvider();
@@ -31,17 +32,27 @@ export const signInWithGoogle = async () => {
             });
         }
     } catch (err) {
-        console.log(err);
-        alert(err.message);
+        toast.error('Google auth failed. Try again');
     }
 };
 
 export const logInWithEmailAndPassword = async (email, password) => {
     try {
         await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-        console.log(err);
-        alert(err.message);
+    } catch (error) {
+        switch (error.code) {
+            case 'auth/user-not-found':
+                toast.error('User not found');
+                break;
+            case 'auth/wrong-password':
+                toast.error('Wrong password');
+                break;
+            case 'auth/too-many-requests':
+                toast.error('Too many requests. Try again later');
+                break;
+            default:
+                toast.error('Server error. Try again later');
+        }
     }
 };
 
@@ -56,9 +67,15 @@ export const registerWithEmailAndPassword = async (name, email, password) => {
             authProvider: 'local',
             email,
         });
-    } catch (err) {
-        console.log(err);
-        alert(err.message);
+        toast.info('Account created. Check your email');
+    } catch (error) {
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                toast.error('Email is already in use');
+                break;
+            default:
+                toast.error('Error creating your account. Try again later');
+        }
     }
 };
 
@@ -68,7 +85,7 @@ export const sendPasswordReset = async (email) => {
         alert('Password reset link sent!');
     } catch (err) {
         console.log(err);
-        alert(err.message);
+        alert(err.message); //TODO: toast
     }
 };
 

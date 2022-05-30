@@ -87,7 +87,9 @@ const Login = () => {
                 <button
                     type="button"
                     className="btn btn-outline-primary"
-                    onClick={() => logInWithEmailAndPassword(email, password)}
+                    onClick={() =>
+                        logInWithEmailAndPassword(email, password, setEmail)
+                    }
                     disabled={
                         emailError || passwordError || !email || !password
                     }

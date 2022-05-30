@@ -4,8 +4,10 @@ import Login from './views/login/Login';
 import Register from './views/register/Register';
 import Dashboard from './views/dashboard/Dashboard';
 import ResetPass from './views/resetpass/ResetPass';
-import './App.css';
 import VerifyEmail from './views/verify/VerifyEmail';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
     return (
@@ -22,6 +24,15 @@ const App = () => {
                     element={<VerifyEmail />}
                 />
             </Routes>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                pauseOnFocusLoss
+                pauseOnHover
+            />
         </>
     );
 };
