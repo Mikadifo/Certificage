@@ -14,22 +14,32 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [user, loading, error] = useAuthState(auth);
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [user] = useAuthState(auth);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (loading) {
-            //TODO: Loading screen
+    const validateForm = () => {
+        if (!email) {
+            setEmailError('Invalid email');
             return;
         }
+        if (!password) {
+            setPasswordError('Invalid pass');
+            return;
+        }
+        logInWithEmailAndPassword(email, password);
+    };
+
+    useEffect(() => {
         if (user) navigate('/dashboard');
-    }, [user, loading]);
+    }, [user]);
 
     return (
         <div className="container mt-5 p-5 border">
-            <div className="mb-3">
+            <div className="mb-4">
                 <label htmlFor="email-input-login" className="form-label">
-                    Email address
+                    Email address*
                 </label>
                 <input
                     id="email-input-login"
@@ -37,13 +47,15 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="form-control"
-                    placeholder="Email"
-                    required
+                    placeholder="name@example.com"
                 />
+                {emailError && (
+                    <p className="text-start text-danger mt-1">{emailError}</p>
+                )}
             </div>
-            <div className="mb-4">
+            <div className="mb-5">
                 <label htmlFor="pass-input-login" className="form-label">
-                    Password
+                    Password*
                 </label>
                 <input
                     id="pass-input-login"
@@ -52,8 +64,12 @@ const Login = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     className="form-control"
                     placeholder="Password"
-                    required
                 />
+                {passwordError && (
+                    <p className="text-start text-danger mt-1">
+                        {passwordError}
+                    </p>
+                )}
                 <p className="text-end mt-1">
                     <Link to="/reset-pass" className="text-decoration-none">
                         Forgot Password
@@ -64,7 +80,7 @@ const Login = () => {
                 <button
                     type="button"
                     className="btn btn-outline-primary"
-                    onClick={() => logInWithEmailAndPassword(email, password)}
+                    onClick={validateForm}
                 >
                     Login
                 </button>
