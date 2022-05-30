@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { emailRegex, passwordRegex } from '../../validations/FormValidations';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -19,16 +20,22 @@ const Login = () => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
 
-    const validateForm = () => {
-        if (!email) {
-            setEmailError('Invalid email');
-            return;
-        }
-        if (!password) {
-            setPasswordError('Invalid pass');
-            return;
-        }
-        logInWithEmailAndPassword(email, password);
+    const emailChanged = ({ target }) => {
+        setEmailError(
+            !emailRegex.test(email)
+                ? 'Invalid email (Ex: name@example.com)'
+                : '',
+        );
+        setEmail(target.value);
+    };
+
+    const passwordChanged = ({ target }) => {
+        setPasswordError(
+            !passwordRegex.test(password)
+                ? 'Password must be 8 characters at least'
+                : '',
+        );
+        setPassword(target.value);
     };
 
     useEffect(() => {
@@ -45,7 +52,7 @@ const Login = () => {
                     id="email-input-login"
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={emailChanged}
                     className="form-control"
                     placeholder="name@example.com"
                 />
@@ -61,7 +68,7 @@ const Login = () => {
                     id="pass-input-login"
                     type="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={passwordChanged}
                     className="form-control"
                     placeholder="Password"
                 />
@@ -80,7 +87,10 @@ const Login = () => {
                 <button
                     type="button"
                     className="btn btn-outline-primary"
-                    onClick={validateForm}
+                    onClick={() => logInWithEmailAndPassword(email, password)}
+                    disabled={
+                        emailError || passwordError || !email || !password
+                    }
                 >
                     Login
                 </button>
