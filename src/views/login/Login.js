@@ -104,7 +104,6 @@ const Login = () => {
                     className="btn btn-outline-secondary"
                     onClick={signInWithGoogle}
                 >
-                    <i className="fa-brands fa-google"></i>
                     <FontAwesomeIcon icon={faGoogle} /> Login with Google
                 </button>
             </div>

@@ -1,0 +1,11 @@
+.author {
+  color: #2e2836;
+}
+
+.author:hover {
+  color: #2b6fc4;
+}
+
+.copyright {
+  background: rgba(35, 40, 54, 0.3);
+}
