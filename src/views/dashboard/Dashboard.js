@@ -27,13 +27,10 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        if (loading) {
-            //TODO: implement loading screen
-            return;
-        }
         if (!user) return navigate('/');
+        if (!user.emailVerified) return navigate('/email-verification');
         fetchUserName();
-    }, [user, loading]);
+    }, [user]);
 
     return (
         <>

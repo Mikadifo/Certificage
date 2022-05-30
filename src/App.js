@@ -5,6 +5,7 @@ import Register from './views/register/Register';
 import Dashboard from './views/dashboard/Dashboard';
 import ResetPass from './views/resetpass/ResetPass';
 import './App.css';
+import VerifyEmail from './views/verify/VerifyEmail';
 
 const App = () => {
     return (
@@ -15,6 +16,11 @@ const App = () => {
                 <Route exact path="/register" element={<Register />} />
                 <Route exact path="/reset-pass" element={<ResetPass />} />
                 <Route exact path="/dashboard" element={<Dashboard />} />
+                <Route
+                    exact
+                    path="/email-verification"
+                    element={<VerifyEmail />}
+                />
             </Routes>
         </>
     );

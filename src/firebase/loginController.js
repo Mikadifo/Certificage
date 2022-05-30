@@ -5,6 +5,7 @@ import {
     signInWithPopup,
     signInWithEmailAndPassword,
     signOut,
+    sendEmailVerification,
 } from 'firebase/auth';
 import { query } from 'firebase/database';
 import { addDoc, collection, getDocs, where } from 'firebase/firestore';
@@ -48,6 +49,7 @@ export const registerWithEmailAndPassword = async (name, email, password) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
+        await sendEmailVerification(user);
         await addDoc(collection(db, 'users'), {
             uid: user.uid,
             name,
