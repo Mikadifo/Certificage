@@ -7,3 +7,6 @@ export const passwordRegex = /.{8,}/;
 
 //Name must contain only alphanumerics
 export const nameRegex = /\w{4,}/;
+
+//File must be an image only
+export const isValidImage = (file) => file.type.split('/')[0] === 'image';
