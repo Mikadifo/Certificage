@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import CertificateNavbar from '../../components/certificates/CertificateNavbar';
 import CertificasteList from '../../components/certificates/CertificatesList';
 import NewCertificate from '../../components/certificates/NewCertificate';
 import { auth } from '../../firebase/config';
-import { logout } from '../../firebase/loginController';
 
 const Dashboard = () => {
     const [user, loading] = useAuthState(auth);
@@ -20,22 +20,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <button
-                className="btn btn-primary"
-                disabled={newFile}
-                onClick={() => toggleNew(!newFile)}
-            >
-                New
-            </button>
-            <button
-                className="btn btn-danger"
-                onClick={() => {
-                    logout();
-                    navigate('/');
-                }}
-            >
-                Logout
-            </button>
+            <CertificateNavbar toggleNew={toggleNew} newFile={newFile} />
             {newFile ? (
                 <NewCertificate setShowing={toggleNew} />
             ) : (
