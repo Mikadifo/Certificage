@@ -2,7 +2,10 @@ import { getDownloadURL } from 'firebase/storage';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { uploadCertificate } from '../../firebase/storageController';
-import { isValidImage, nameRegex } from '../../validations/FormValidations';
+import {
+    certificateNameRegex,
+    isValidImage,
+} from '../../validations/FormValidations';
 
 const NewCertificate = ({ setShowing }) => {
     const [fileName, setFileName] = useState('');
@@ -40,8 +43,8 @@ const NewCertificate = ({ setShowing }) => {
     const fileNameChanged = ({ target }) => {
         setFileName(target.value);
         setFileNameError(
-            !nameRegex.test(target.value)
-                ? 'File name must be alphanumerics and at list 4 characters (A-z, 0-9, _)'
+            !certificateNameRegex.test(target.value)
+                ? 'File name must be alphanumerics and at least 4 characters and max 67 (A-z, 0-9, _)'
                 : '',
         );
     };
