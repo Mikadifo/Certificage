@@ -37,7 +37,7 @@ const Dashboard = () => {
                 Logout
             </button>
             {newFile ? (
-                <NewCertificate showing={newFile} setShowing={toggleNew} />
+                <NewCertificate setShowing={toggleNew} />
             ) : (
                 <CertificasteList />
             )}
