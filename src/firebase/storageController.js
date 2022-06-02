@@ -1,4 +1,5 @@
 import {
+    deleteObject,
     getDownloadURL,
     listAll,
     ref,
@@ -33,6 +34,16 @@ export const getStorageItmesByUser = async () => {
 
         return urls;
     } catch (error) {
-        toast.error('Error loagin your certificates. Try again later');
+        toast.error('Error loading your certificates. Try again later');
+    }
+};
+
+export const deleteItemById = (id) => {
+    try {
+        const storageRef = ref(storage, id);
+
+        return deleteObject(storageRef);
+    } catch (error) {
+        toast.error('Error deleting your certificate. Try again later');
     }
 };

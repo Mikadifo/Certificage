@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase/config';
-import { getStorageItmesByUser } from '../../firebase/storageController';
+import {
+    deleteItemById,
+    getStorageItmesByUser,
+} from '../../firebase/storageController';
 import CertificateCard from './CertificateCard';
 
 const CertificatesList = () => {
@@ -21,6 +24,19 @@ const CertificatesList = () => {
                 );
     };
 
+    const deleteFile = (id) => {
+        deleteItemById(id)
+            .then(() => {
+                toast.info('Certificate deleted');
+                setCertificates(
+                    certificates.filter((certificate) => certificate.id != id),
+                );
+            })
+            .catch(() =>
+                toast.error('Error when deleting your file. Try again later.'),
+            );
+    };
+
     useEffect(() => {
         if (!loading) {
             if (user) fetchCertificates();
@@ -35,7 +51,10 @@ const CertificatesList = () => {
                     <div className="row">
                         {certificates.map((certificate) => (
                             <div className="col" key={certificate.id}>
-                                <CertificateCard certificate={certificate} />
+                                <CertificateCard
+                                    certificate={certificate}
+                                    deleteFile={deleteFile}
+                                />
                             </div>
                         ))}
                     </div>
