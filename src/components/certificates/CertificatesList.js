@@ -49,9 +49,17 @@ const CertificatesList = ({ sharing }) => {
 
     useEffect(() => {
         if (!loading || sharing) {
-            fetchCertificates();
+            if (user) fetchCertificates();
         }
     }, [user]);
+
+    if (!user)
+        return (
+            <div className="container border rounded p-5 mt-5">
+                Sorry. For security terms you must be logged in to see this
+                user's certificates.
+            </div>
+        );
 
     return (
         <div className="container border rounded p-5 mt-5">
