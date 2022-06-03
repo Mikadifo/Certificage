@@ -62,6 +62,7 @@ const NewCertificate = ({ setShowing }) => {
                 {filePreview && (
                     <img
                         src={filePreview}
+                        style={{ maxWidth: '45rem' }}
                         className="rounded mx-auto d-block mt-4"
                         alt="image-selection"
                     />

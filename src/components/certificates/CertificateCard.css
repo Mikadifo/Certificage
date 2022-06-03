@@ -1,0 +1,14 @@
+.certificate-img {
+  max-width: 20rem;
+  max-height: 13rem;
+}
+
+.certificate-img:hover {
+  cursor: pointer;
+  border: solid 2px #000000;
+}
+
+.certificate-container {
+  width: 20rem;
+  height: 21rem;
+}

@@ -9,11 +9,13 @@ import {
 } from '../../firebase/storageController';
 import { fetchUserEmailByUid } from '../../firebase/userController';
 import CertificateCard from './CertificateCard';
+import ViewCertificate from './ViewCertificate';
 
 const CertificatesList = ({ sharing }) => {
     const [certificates, setCertificates] = useState([]);
     const [user, loading] = useAuthState(auth);
     const [userEmail, setUserEmail] = useState('');
+    const [expandedCertificate, setExpandedCertificate] = useState({});
     const sharingUid = useParams();
 
     const fetchCertificates = async () => {
@@ -59,19 +61,29 @@ const CertificatesList = ({ sharing }) => {
                     : 'Your Certificates'}
             </h1>
             {certificates.length > 0 ? (
-                <div className="container text-center">
-                    <div className="row">
-                        {certificates.map((certificate) => (
-                            <div className="col" key={certificate.id}>
-                                <CertificateCard
-                                    certificate={certificate}
-                                    deleteFile={deleteFile}
-                                    sharing={sharing}
-                                />
-                            </div>
-                        ))}
+                expandedCertificate.name ? (
+                    <ViewCertificate
+                        certificate={expandedCertificate}
+                        setExpandedCertificate={setExpandedCertificate}
+                    />
+                ) : (
+                    <div className="container text-center">
+                        <div className="row">
+                            {certificates.map((certificate) => (
+                                <div className="col" key={certificate.id}>
+                                    <CertificateCard
+                                        certificate={certificate}
+                                        deleteFile={deleteFile}
+                                        sharing={sharing}
+                                        setExpandedCertificate={
+                                            setExpandedCertificate
+                                        }
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )
             ) : (
                 <div className="text-center">
                     <h3 className="mt-5">You don't have certificates yet.</h3>
