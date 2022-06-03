@@ -1,11 +1,5 @@
 import { query } from 'firebase/database';
-import {
-    collection,
-    getDoc,
-    getDocs,
-    updateDoc,
-    where,
-} from 'firebase/firestore';
+import { collection, getDocs, updateDoc, where } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { auth, db } from './config';
 
@@ -28,21 +22,19 @@ export const updateUser = async (newInfo) => {
     }
 };
 
-export const getUser = async () => {
+export const fetchUserEmailByUid = async (uid) => {
     try {
         const uidQuery = query(
             collection(db, 'users'),
-            where('uid', '==', auth.currentUser.uid),
+            where('uid', '==', uid),
         );
         const documents = await getDocs(uidQuery);
 
         if (documents.docs.length > 0) {
-            const docSnap = await getDoc(documents.docs[0].ref);
-            if (docSnap.exists())
-                return docSnap._document.data.value.mapValue.fields;
+            return documents.docs[0]._document.data.value.mapValue.fields.name
+                .stringValue;
         }
-        toast.error('User not found');
     } catch (error) {
-        toast.error('Error fetching user. Try again later');
+        toast.error('Error fetching user email. Try again later');
     }
 };

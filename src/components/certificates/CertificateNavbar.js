@@ -1,38 +1,24 @@
 import logo from './../../logo.svg';
 import { logout } from '../../firebase/loginController';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { getUser, updateUser } from '../../firebase/userController';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/config';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-const CertificateNavbar = ({ toggleNew, newFile }) => {
+const CertificateNavbar = ({ toggleNew, newFile, sharing }) => {
     const [user, loading] = useAuthState(auth);
-    const [isOwner, setIsOwner] = useState(false);
-    const [userInfo, setUserInfo] = useState({});
     const navigate = useNavigate();
 
     const shareList = () => {
-        let sharingLink = '';
-        if (userInfo.sharingLink) {
-            sharingLink = userInfo.sharingLink.stringValue;
-        } else {
-            console.log(window.location.href); //user this to append a react url and disbale delete button
-            //generate one and do the same
-        }
+        const sharingLink = `${window.location.origin}/shared/${user.uid}`;
         navigator.clipboard.writeText(sharingLink);
         toast.success('Link copied in your clipboard. Paste anywhere!');
     };
 
-    const fetchUserInfo = async () => {
-        const res = await getUser();
-        if (res) setUserInfo(res);
-    };
-
     useEffect(() => {
-        if (!loading) {
-            if (user) fetchUserInfo();
+        if (!loading && !sharing) {
+            if (!user) navigate('/');
         }
     }, [user]);
 
@@ -49,30 +35,38 @@ const CertificateNavbar = ({ toggleNew, newFile }) => {
                     CERTIFICAGE
                 </Link>
             </div>
-            <div className="me-3" id="navbarNavAltMarkup">
-                <button
-                    className="btn btn-primary"
-                    disabled={newFile}
-                    onClick={() => toggleNew(!newFile)}
-                >
-                    New Certificate
-                </button>
-                <button
-                    className="btn btn-secondary me-3 ms-3"
-                    onClick={shareList}
-                >
-                    Share
-                </button>
-                <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                        logout();
-                        navigate('/');
-                    }}
-                >
-                    Logout
-                </button>
-            </div>
+            {sharing ? (
+                <div className="me-3" id="navbarNavAltMarkup">
+                    <Link className="btn btn-primary" to="/">
+                        Home
+                    </Link>
+                </div>
+            ) : (
+                <div className="me-3" id="navbarNavAltMarkup">
+                    <button
+                        className="btn btn-primary"
+                        disabled={newFile}
+                        onClick={() => toggleNew(!newFile)}
+                    >
+                        New Certificate
+                    </button>
+                    <button
+                        className="btn btn-secondary me-3 ms-3"
+                        onClick={shareList}
+                    >
+                        Share
+                    </button>
+                    <button
+                        className="btn btn-danger"
+                        onClick={() => {
+                            logout();
+                            navigate('/');
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
+            )}
         </nav>
     );
 };

@@ -1,23 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { auth } from '../../firebase/config';
 import {
     deleteItemById,
-    getStorageItmesByUser,
+    getStorageItemsByUser,
 } from '../../firebase/storageController';
+import { fetchUserEmailByUid } from '../../firebase/userController';
 import CertificateCard from './CertificateCard';
 
-const CertificatesList = () => {
+const CertificatesList = ({ sharing }) => {
     const [certificates, setCertificates] = useState([]);
     const [user, loading] = useAuthState(auth);
+    const [userEmail, setUserEmail] = useState('');
+    const sharingUid = useParams();
 
     const fetchCertificates = async () => {
-        const res = await getStorageItmesByUser();
+        if (sharing)
+            setUserEmail(await fetchUserEmailByUid(sharingUid.sharingUid));
+        const res = await getStorageItemsByUser(
+            sharing ? sharingUid.sharingUid : user.uid,
+        );
         if (res.length > 0)
             Promise.all(res)
                 .then((items) => setCertificates(items))
-                .catch((error) =>
+                .catch(() =>
                     toast.error(
                         'Error getting certificate urls. Try again later',
                     ),
@@ -38,14 +46,18 @@ const CertificatesList = () => {
     };
 
     useEffect(() => {
-        if (!loading) {
-            if (user) fetchCertificates();
+        if (!loading || sharing) {
+            fetchCertificates();
         }
     }, [user]);
 
     return (
         <div className="container border rounded p-5 mt-5">
-            <h1 className="text-center">Your Certificates</h1>
+            <h1 className="text-center">
+                {sharing && userEmail
+                    ? `${userEmail}'s Certificates`
+                    : 'Your Certificates'}
+            </h1>
             {certificates.length > 0 ? (
                 <div className="container text-center">
                     <div className="row">
@@ -54,6 +66,7 @@ const CertificatesList = () => {
                                 <CertificateCard
                                     certificate={certificate}
                                     deleteFile={deleteFile}
+                                    sharing={sharing}
                                 />
                             </div>
                         ))}

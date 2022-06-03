@@ -19,10 +19,9 @@ export const uploadCertificate = (file, fileName) => {
     }
 };
 
-export const getStorageItmesByUser = async () => {
+export const getStorageItemsByUser = async (userUid) => {
     try {
-        const userFolder = auth.currentUser.uid;
-        const storageRef = ref(storage, `${userFolder}`);
+        const storageRef = ref(storage, `${userUid}`);
         const dir = await listAll(storageRef);
         const urls = dir.items.map(async (item) => {
             return {

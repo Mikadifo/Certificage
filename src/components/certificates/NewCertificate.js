@@ -31,7 +31,6 @@ const NewCertificate = ({ setShowing }) => {
                     toast.error('Error uploading certificate. Try again later'),
                 () => {
                     getDownloadURL(uploadState.snapshot.ref).then((url) => {
-                        console.log(url);
                         setShowing(false);
                         toast.success('Certificate saved');
                     });

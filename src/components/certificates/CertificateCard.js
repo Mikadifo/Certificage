@@ -1,4 +1,4 @@
-const CertificateCard = ({ certificate, deleteFile }) => {
+const CertificateCard = ({ certificate, deleteFile, sharing }) => {
     const imageMaxWidth = '20rem';
 
     const deleteCertificate = () => {
@@ -9,7 +9,10 @@ const CertificateCard = ({ certificate, deleteFile }) => {
     return (
         <div
             className="card mt-5 p-2"
-            style={{ width: imageMaxWidth, height: '23rem' }}
+            style={{
+                width: imageMaxWidth,
+                height: '21rem',
+            }}
         >
             <img
                 src={certificate.url}
@@ -19,9 +22,14 @@ const CertificateCard = ({ certificate, deleteFile }) => {
             />
             <div className="card-body">
                 <h5 className="card-title">{certificate.name}</h5>
-                <button className="btn btn-danger" onClick={deleteCertificate}>
-                    Delete Certificate
-                </button>
+                {!sharing && (
+                    <button
+                        className="btn btn-danger"
+                        onClick={deleteCertificate}
+                    >
+                        Delete Certificate
+                    </button>
+                )}
             </div>
         </div>
     );
