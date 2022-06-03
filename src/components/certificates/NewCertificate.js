@@ -1,9 +1,13 @@
 import { getDownloadURL } from 'firebase/storage';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { uploadCertificate } from '../../firebase/storageController';
-import { isValidImage, nameRegex } from '../../validations/FormValidations';
+import {
+    certificateNameRegex,
+    isValidImage,
+} from '../../validations/FormValidations';
 
-const NewCertificate = ({ showing, setShowing }) => {
+const NewCertificate = ({ setShowing }) => {
     const [fileName, setFileName] = useState('');
     const [file, setFile] = useState('');
     const [filePreview, setFilePreview] = useState('');
@@ -12,7 +16,7 @@ const NewCertificate = ({ showing, setShowing }) => {
     const [uploadPercent, setUploadPercent] = useState(0);
 
     const uploadFile = () => {
-        const uploadState = uploadCertificate(file);
+        const uploadState = uploadCertificate(file, fileName);
         if (uploadState) {
             uploadState.on(
                 'state_changed',
@@ -23,10 +27,12 @@ const NewCertificate = ({ showing, setShowing }) => {
 
                     setUploadPercent(percent);
                 },
-                (err) => console.log(err),
+                (err) =>
+                    toast.error('Error uploading certificate. Try again later'),
                 () => {
                     getDownloadURL(uploadState.snapshot.ref).then((url) => {
-                        console.log(url);
+                        setShowing(false);
+                        toast.success('Certificate saved');
                     });
                 },
             );
@@ -36,8 +42,8 @@ const NewCertificate = ({ showing, setShowing }) => {
     const fileNameChanged = ({ target }) => {
         setFileName(target.value);
         setFileNameError(
-            !nameRegex.test(target.value)
-                ? 'File name must be alphanumerics and at list 4 characters (A-z, 0-9, _)'
+            !certificateNameRegex.test(target.value)
+                ? 'File name must be alphanumerics and at least 4 characters and max 67 (A-z, 0-9, _)'
                 : '',
         );
     };
@@ -56,6 +62,7 @@ const NewCertificate = ({ showing, setShowing }) => {
                 {filePreview && (
                     <img
                         src={filePreview}
+                        style={{ maxWidth: '45rem' }}
                         className="rounded mx-auto d-block mt-4"
                         alt="image-selection"
                     />
@@ -95,7 +102,7 @@ const NewCertificate = ({ showing, setShowing }) => {
             <p className="mt-3">
                 <b>Loading status</b>
             </p>
-            <div className="progress mb-4">
+            <div className="progress mb-5">
                 <div
                     className="progress-bar"
                     role="progressbar"
@@ -117,7 +124,7 @@ const NewCertificate = ({ showing, setShowing }) => {
                     onClick={uploadFile}
                     disabled={!file || fileError}
                 >
-                    New
+                    Upload
                 </button>
             </div>
         </div>

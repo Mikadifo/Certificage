@@ -17,7 +17,16 @@ const App = () => {
                 <Route exact path="/login" element={<Login />} />
                 <Route exact path="/register" element={<Register />} />
                 <Route exact path="/reset-pass" element={<ResetPass />} />
-                <Route exact path="/dashboard" element={<Dashboard />} />
+                <Route
+                    exact
+                    path="/dashboard"
+                    element={<Dashboard sharing={false} />}
+                />
+                <Route
+                    exact
+                    path="/shared/:sharingUid"
+                    element={<Dashboard sharing={true} />}
+                />
                 <Route
                     exact
                     path="/email-verification"

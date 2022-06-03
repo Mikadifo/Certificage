@@ -43,6 +43,21 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 Everyone can freely suggest changes on the project, I'll really appreciate that.
 
+## Env setup
+To run the project locally, you need to have the following variables in a .env file:
+
+```
+REACT_APP_API_KEY=<YOUR_FIREBASE_API_KEY>
+REACT_APP_AUTH_DOMAIN=<YOUR_FIREBASE_DOMAIN>
+REACT_APP_DATABASE_URL=<FIRESTORE_DB_URL>
+REACT_APP_PROJECT_ID=<PROJECT_ID>
+REACT_APP_STORAGE_BUCKET=<YOUR_STORAGE_BUCKET_URL>
+REACT_APP_MESSAGING_SENDER_ID=<MESSAGING_SENDER_ID>
+REACT_APP_APP_ID=<APP_ID>
+```
+
+All the above info and keys are provided by firebase when you add an app in your firebase project, so you just have to copy all that object info here.
+
 ## Future
 
 The project's ideas for the future are, implement google login, create a landing page and categorize certificates.
